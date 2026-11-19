@@ -12,6 +12,7 @@ Makefile.*
 build/
 obj/
 dist/
+/output
 
 # Logs e temporários
 *.log
