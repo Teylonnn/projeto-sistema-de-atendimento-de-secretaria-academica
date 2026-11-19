@@ -1,0 +1,30 @@
+# Arquivos gerados pelo compilador
+*.o
+*.a
+*.so
+*.dll
+*.exe
+*.out
+Makefile.*
+*.suo
+
+# Diretórios de build
+build/
+obj/
+dist/
+
+# Logs e temporários
+*.log
+logs/
+tmp/
+temp/
+
+# Configurações e arquivos sensíveis
+.config
+*.pem
+*.key
+.env
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
