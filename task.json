@@ -1,0 +1,20 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "Compilar Projeto Secretaria",
+            "command": "chcp 65001 | Out-Null; & gcc -Wall -Wextra -g3 \"${workspaceFolder}/src/main.c\" \"${workspaceFolder}/lib/TabelaHash.c\" \"${workspaceFolder}/lib/ArvoreBinaria.c\" \"${workspaceFolder}/lib/FilaDin.c\" \"${workspaceFolder}/lib/FilaPrioridade.c\" \"${workspaceFolder}/lib/PilhaDin.c\" \"${workspaceFolder}/lib/ListaDinEncadDupla.c\" -I\"${workspaceFolder}/lib\" -o \"${workspaceFolder}/src/output/main.exe\"; exit $LASTEXITCODE",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
