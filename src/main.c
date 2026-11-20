@@ -14,7 +14,7 @@
 
 void templateMenuDeOpcoes(void);
 
-void cadastrarAluno(Hash *tabelaHash, ArvBin *arvoreBinaria, int *quantidadeDeMatriculasAtivas ){
+void cadastrarAluno(Hash *tabelaHash, ArvBin *arvoreBinaria, int *quantidadeDeMatriculasAtivas, int *quantidadeAlunosCadastrados){
     int matriculaDoAluno;
     char nomeDoAluno[TAMANHO_NOME];
     float primeiraNotaDoAluno, segundaNotaDoAluno, terceiraNotaDoAluno;
@@ -36,7 +36,7 @@ void cadastrarAluno(Hash *tabelaHash, ArvBin *arvoreBinaria, int *quantidadeDeMa
     strcpy(aluno.nome, nomeDoAluno);
     aluno.n1 = primeiraNotaDoAluno;
     aluno.n2 = segundaNotaDoAluno;
-    aluno.n1 = terceiraNotaDoAluno;
+    aluno.n3 = terceiraNotaDoAluno;
 
     if(buscaHash_EnderAberto(tabelaHash, matriculaDoAluno, &aluno) == 1){
         printf("Matricula já cadastrada.\n");
@@ -46,6 +46,7 @@ void cadastrarAluno(Hash *tabelaHash, ArvBin *arvoreBinaria, int *quantidadeDeMa
     int i = insereHash_EnderAberto(tabelaHash, aluno);
     insere_ArvBin(arvoreBinaria, matriculaDoAluno);
     (*quantidadeDeMatriculasAtivas)++;
+    (*quantidadeAlunosCadastrados)++;
 
     i == 1? printf("Aluno cadastrado !!!") : printf("Aluno não pode ser cadastrado.");
    
@@ -77,7 +78,26 @@ void trancarMatriculaAtiva(ArvBin *arvoreBinaria, int *quantidadeDeMatriculasAti
 
 }
 
-void menuSistemaSecretariaAcademica(Hash *tabelaHash, ArvBin *arvoreBinaria, int *quantidadeDeMatriculasAtivas ){
+void consultarAluno(Hash *tabelaHash){
+    struct aluno alAux;
+    int matriculaDoAluno = 0;
+
+    printf("Matricula:  ");
+    scanf(" %d", &matriculaDoAluno);
+
+    if(buscaHash_EnderAberto(tabelaHash,  matriculaDoAluno, &alAux) == 0){
+        printf("Nada foi encontrado !!!\n");
+        return;
+    }
+
+    printf("\n\nMatricula:  %d", alAux.matricula);
+    printf("\nNome:  %s", alAux.nome);
+    printf("\n1.o Nota:  %.2f", alAux.n1);
+    printf("\n2.o Nota:  %.2f", alAux.n2);
+    printf("\n3.o Nota:  %.2f ", alAux.n3);
+}
+
+void menuSistemaSecretariaAcademica(Hash *tabelaHash, ArvBin *arvoreBinaria, int *quantidadeDeMatriculasAtivas, int *quantidadeAlunosCadastrados){
     int opcao;
 
     do{
@@ -89,9 +109,16 @@ void menuSistemaSecretariaAcademica(Hash *tabelaHash, ArvBin *arvoreBinaria, int
             case 0:
                 break;
             case 1:
-            cadastrarAluno(tabelaHash, arvoreBinaria, quantidadeDeMatriculasAtivas);
+                if((*quantidadeAlunosCadastrados > 11)){
+                    printf("Limite maximo alcançado !!! \n");
+                }
+                else{
+                    cadastrarAluno(tabelaHash, arvoreBinaria, quantidadeDeMatriculasAtivas, quantidadeAlunosCadastrados);
+                }
+               ;
                 break;
             case 2:
+                consultarAluno(tabelaHash);
                 break;
             case 3:
                 listagemDeMatriculasAtivas(arvoreBinaria);
@@ -123,7 +150,7 @@ void menuSistemaSecretariaAcademica(Hash *tabelaHash, ArvBin *arvoreBinaria, int
 }
 
 void templateMenuDeOpcoes(){
-    printf("        <--- SISTEMA DE GESTAO DA SECRETARIA ACADEMICA ---> \n");
+    printf("\n        <--- SISTEMA DE GESTAO DA SECRETARIA ACADEMICA ---> \n");
     printf("---------------------------------------------------------------------\n");
     printf("[1] - Cadastrar aluno\n");
     printf("[2] - Consultar aluno\n");
@@ -142,7 +169,8 @@ int main(){
     Hash *tabelaHash = criaHash(MAX_TABELA_HASH);
     ArvBin *arvoreBinaria = cria_ArvBin();
     int quantidadeDeMatriculasAtivas = 0;
-    menuSistemaSecretariaAcademica(tabelaHash, arvoreBinaria, &quantidadeDeMatriculasAtivas);
+    int quantidadeAlunosCadastrados = 0;
+    menuSistemaSecretariaAcademica(tabelaHash, arvoreBinaria, &quantidadeDeMatriculasAtivas, &quantidadeAlunosCadastrados);
 
     return 0;
 }
