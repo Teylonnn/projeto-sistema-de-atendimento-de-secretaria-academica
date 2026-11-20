@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#define MAX_TABELA_HASH 11
+#define TAMANHO_NOME 30
 
 #include "../lib/Aluno.h"
 #include "../lib/TabelaHash.h"
@@ -10,7 +12,45 @@
 #include "../lib/PilhaDin.h"
 #include "../lib/ListaDinEncadDupla.h"
 
-void menuSistemaSecretariaAcademica(){
+void templateMenuDeOpcoes(void);
+
+void cadastrarAluno(Hash *tabelaHash, ArvBin *arvoreBinaria){
+    int matriculaDoAluno;
+    char nomeDoAluno[TAMANHO_NOME];
+    float primeiraNotaDoAluno, segundaNotaDoAluno, terceiraNotaDoAluno;
+
+
+    printf("Matricula:  ");
+    scanf("%d", &matriculaDoAluno);
+    printf("Nome:  ");
+    scanf(" %99[^\n]", nomeDoAluno);
+    printf("1.o Nota:  ");
+    scanf("%f", &primeiraNotaDoAluno);
+    printf("2.o Nota:  ");
+    scanf("%f", &segundaNotaDoAluno);
+    printf("3.o Nota:  ");
+    scanf("%f", &terceiraNotaDoAluno);
+
+    struct aluno aluno;
+    aluno.matricula = matriculaDoAluno;
+    strcpy(aluno.nome, nomeDoAluno);
+    aluno.n1 = primeiraNotaDoAluno;
+    aluno.n2 = segundaNotaDoAluno;
+    aluno.n1 = terceiraNotaDoAluno;
+
+    if(buscaHash_EnderAberto(tabelaHash, matriculaDoAluno, &aluno) == 1){
+        printf("Matricula já cadastrada.\n");
+        return;
+    }
+    
+    int i = insereHash_EnderAberto(tabelaHash, aluno);
+    insere_ArvBin(arvoreBinaria, matriculaDoAluno);
+
+    i == 1? printf("Aluno cadastrado !!!") : printf("Aluno não pode ser cadastrado.");
+   
+}
+
+void menuSistemaSecretariaAcademica(Hash *tabelaHash, ArvBin *arvoreBinaria){
     int opcao;
 
     do{
@@ -22,6 +62,7 @@ void menuSistemaSecretariaAcademica(){
             case 0:
                 break;
             case 1:
+            cadastrarAluno(tabelaHash, arvoreBinaria);
                 break;
             case 2:
                 break;
@@ -64,8 +105,9 @@ void templateMenuDeOpcoes(){
 }
 
 int main(){
-
-    menuSistemaSecretariaAcademica();
+    Hash *tabelaHash = criaHash(MAX_TABELA_HASH);
+    ArvBin *arvoreBinaria = cria_ArvBin();
+    menuSistemaSecretariaAcademica(tabelaHash, arvoreBinaria);
 
     return 0;
 }
