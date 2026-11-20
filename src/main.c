@@ -44,6 +44,21 @@ void menuSistemaSecretariaAcademica(){
     }while(opcao != 0);
 }
 
+void templateMenuDeOpcoes(){
+    printf("        <--- SISTEMA DE GESTÃO DA SECRETARIA ACADÊMICA ---> \n");
+    printf("---------------------------------------------------------------------\n");
+    printf("[1] - Cadastrar aluno\n");
+    printf("[2] - Consultar aluno\n");
+    printf("[3] - Listagem de matrículas ativas\n");
+    printf("[4] - Trancar matrícula\n");
+    printf("[5] - Chegada para atendimento\n");
+    printf("[6] - Registrar urgência\n");
+    printf("[7] - Atender próximo\n");
+    printf("[8] - Despachar requerimento\n");
+    printf("[9] - Relatório\n");
+    printf("[0] - Sair\n");
+    printf("---------------------------------------------------------------------\n");
+}
 
 int main(){
 
