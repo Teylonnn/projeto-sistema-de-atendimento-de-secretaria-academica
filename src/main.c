@@ -14,10 +14,13 @@ void menuSistemaSecretariaAcademica(){
     int opcao;
 
     do{
+        templateMenuDeOpcoes();
         printf("Opcao (0 a 9):  ");
         scanf("%d", &opcao);
 
         switch(opcao){
+            case 0:
+                break;
             case 1:
                 break;
             case 2:
@@ -37,7 +40,7 @@ void menuSistemaSecretariaAcademica(){
             case 9:
                 break;
             default:
-                printf("Opcao invalida !!!");
+                printf("Opcao invalida !!!\n");
                 break;
         }
 
@@ -45,22 +48,24 @@ void menuSistemaSecretariaAcademica(){
 }
 
 void templateMenuDeOpcoes(){
-    printf("        <--- SISTEMA DE GESTÃO DA SECRETARIA ACADÊMICA ---> \n");
+    printf("        <--- SISTEMA DE GESTAO DA SECRETARIA ACADEMICA ---> \n");
     printf("---------------------------------------------------------------------\n");
     printf("[1] - Cadastrar aluno\n");
     printf("[2] - Consultar aluno\n");
-    printf("[3] - Listagem de matrículas ativas\n");
-    printf("[4] - Trancar matrícula\n");
+    printf("[3] - Listagem de matriculas ativas\n");
+    printf("[4] - Trancar matricula\n");
     printf("[5] - Chegada para atendimento\n");
-    printf("[6] - Registrar urgência\n");
-    printf("[7] - Atender próximo\n");
+    printf("[6] - Registrar urgencia\n");
+    printf("[7] - Atender proximo\n");
     printf("[8] - Despachar requerimento\n");
-    printf("[9] - Relatório\n");
+    printf("[9] - Relatorio\n");
     printf("[0] - Sair\n");
     printf("---------------------------------------------------------------------\n");
 }
 
 int main(){
+
+    menuSistemaSecretariaAcademica();
 
     return 0;
 }
