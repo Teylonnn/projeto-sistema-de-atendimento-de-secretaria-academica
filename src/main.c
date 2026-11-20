@@ -50,6 +50,14 @@ void cadastrarAluno(Hash *tabelaHash, ArvBin *arvoreBinaria){
    
 }
 
+void exibirMatriculasAtivas(ArvBin *arvoreBinaria){
+    printf("      < MATRICULAS ATIVAS >\n");
+    printf("-----------------------------------\n");
+    emordem_ArvBin(arvoreBinaria);
+    printf("\n-----------------------------------\n");
+
+}
+
 void menuSistemaSecretariaAcademica(Hash *tabelaHash, ArvBin *arvoreBinaria){
     int opcao;
 
@@ -67,6 +75,7 @@ void menuSistemaSecretariaAcademica(Hash *tabelaHash, ArvBin *arvoreBinaria){
             case 2:
                 break;
             case 3:
+                exibirMatriculasAtivas(arvoreBinaria);
                 break;
             case 4:
                 break;
