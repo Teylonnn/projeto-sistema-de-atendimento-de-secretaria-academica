@@ -14,7 +14,7 @@
 
 void templateMenuDeOpcoes(void);
 
-void cadastrarAluno(Hash *tabelaHash, ArvBin *arvoreBinaria){
+void cadastrarAluno(Hash *tabelaHash, ArvBin *arvoreBinaria, int *quantidadeDeMatriculasAtivas ){
     int matriculaDoAluno;
     char nomeDoAluno[TAMANHO_NOME];
     float primeiraNotaDoAluno, segundaNotaDoAluno, terceiraNotaDoAluno;
@@ -45,12 +45,13 @@ void cadastrarAluno(Hash *tabelaHash, ArvBin *arvoreBinaria){
     
     int i = insereHash_EnderAberto(tabelaHash, aluno);
     insere_ArvBin(arvoreBinaria, matriculaDoAluno);
+    (*quantidadeDeMatriculasAtivas)++;
 
     i == 1? printf("Aluno cadastrado !!!") : printf("Aluno não pode ser cadastrado.");
    
 }
 
-void exibirMatriculasAtivas(ArvBin *arvoreBinaria){
+void listagemDeMatriculasAtivas(ArvBin *arvoreBinaria){
     printf("      < MATRICULAS ATIVAS >\n");
     printf("-----------------------------------\n");
     emordem_ArvBin(arvoreBinaria);
@@ -58,7 +59,25 @@ void exibirMatriculasAtivas(ArvBin *arvoreBinaria){
 
 }
 
-void menuSistemaSecretariaAcademica(Hash *tabelaHash, ArvBin *arvoreBinaria){
+void trancarMatriculaAtiva(ArvBin *arvoreBinaria, int *quantidadeDeMatriculasAtivas ){
+    int matriculaDoAluno = 0;
+
+    printf("Matricula:  ");
+    scanf(" %d", &matriculaDoAluno);
+
+    if(consulta_ArvBin(arvoreBinaria, matriculaDoAluno != 1)){
+        printf("Matricula não existe ou nao esta ativa.\n");
+        return;
+    }
+
+    remove_ArvBin(arvoreBinaria, matriculaDoAluno);
+    (*quantidadeDeMatriculasAtivas)--;
+
+    printf("Matricula trancada com sucesso !!!\n");
+
+}
+
+void menuSistemaSecretariaAcademica(Hash *tabelaHash, ArvBin *arvoreBinaria, int *quantidadeDeMatriculasAtivas ){
     int opcao;
 
     do{
@@ -70,14 +89,20 @@ void menuSistemaSecretariaAcademica(Hash *tabelaHash, ArvBin *arvoreBinaria){
             case 0:
                 break;
             case 1:
-            cadastrarAluno(tabelaHash, arvoreBinaria);
+            cadastrarAluno(tabelaHash, arvoreBinaria, quantidadeDeMatriculasAtivas);
                 break;
             case 2:
                 break;
             case 3:
-                exibirMatriculasAtivas(arvoreBinaria);
+                listagemDeMatriculasAtivas(arvoreBinaria);
                 break;
             case 4:
+                if((*quantidadeDeMatriculasAtivas) <= 0){
+                    printf("Sem matriculas ativas. \n");                   
+                }
+                else{
+                    trancarMatriculaAtiva(arvoreBinaria, quantidadeDeMatriculasAtivas );
+                }
                 break;
             case 5:
                 break;
@@ -116,7 +141,8 @@ void templateMenuDeOpcoes(){
 int main(){
     Hash *tabelaHash = criaHash(MAX_TABELA_HASH);
     ArvBin *arvoreBinaria = cria_ArvBin();
-    menuSistemaSecretariaAcademica(tabelaHash, arvoreBinaria);
+    int quantidadeDeMatriculasAtivas = 0;
+    menuSistemaSecretariaAcademica(tabelaHash, arvoreBinaria, &quantidadeDeMatriculasAtivas);
 
     return 0;
 }
