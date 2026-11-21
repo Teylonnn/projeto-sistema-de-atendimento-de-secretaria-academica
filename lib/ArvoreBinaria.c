@@ -144,3 +144,13 @@ void emordem_ArvBin(ArvBin *raiz) {
         emordem_ArvBin(&((*raiz)->dir));
     }
 }
+
+void exibirArvBinEmOrdem(ArvBin *raiz) {
+    if (raiz == NULL)
+        return;
+    if (*raiz != NULL) {
+        emordem_ArvBin(&((*raiz)->esq));
+        printf("{ %d } ", (*raiz)->info);
+        emordem_ArvBin(&((*raiz)->dir));
+    }
+}

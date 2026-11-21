@@ -119,7 +119,7 @@ void consultarAluno(Hash *tabelaHash){
 void listagemDeMatriculasAtivas(ArvBin *arvoreBinaria){
     printf("      < MATRICULAS ATIVAS >\n");
     printf("-----------------------------------\n");
-    emordem_ArvBin(arvoreBinaria);
+    exibirArvBinEmOrdem(arvoreBinaria);
     printf("\n-----------------------------------\n");
 
 }
