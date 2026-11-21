@@ -164,13 +164,24 @@ void menuSistemaSecretariaAcademica(Hash *tabelaHash, ArvBin *arvoreBinaria, int
                 else{
                     cadastrarAluno(tabelaHash, arvoreBinaria, quantidadeDeMatriculasAtivas, quantidadeAlunosCadastrados);
                 }
-               ;
                 break;
             case 2:
-                consultarAluno(tabelaHash);
+                // Verificação se o cadastro de alunos alcançou o limite máximo da tabela hash;
+                if((*quantidadeAlunosCadastrados <= 0)){
+                    printf("Sem alunos cadastrados!!! \n");
+                }
+                else{
+                    consultarAluno(tabelaHash);
+                }
                 break;
             case 3:
-                listagemDeMatriculasAtivas(arvoreBinaria);
+                // Verificação se a há matrículas cadastradas;
+                if((*quantidadeDeMatriculasAtivas) <= 0){
+                    printf("Sem matriculas ativas. \n");                   
+                }
+                else{
+                    listagemDeMatriculasAtivas(arvoreBinaria);
+                }
                 break;
             case 4:
                 // Verificação se a há matrículas cadastradas;
