@@ -89,27 +89,30 @@ void cadastrarAluno(Hash *tabelaHash, ArvBin *arvoreBinaria, int *quantidadeDeMa
    
 }
 
+void exibirAluno(struct aluno aluno){
+    // Exibição dos dados da tabela hash;
+    printf("\n\nMatricula:  %d", aluno.matricula);
+    printf("\nNome:  %s", aluno.nome);
+    printf("\n1.o Nota:  %.2f", aluno.n1);
+    printf("\n2.o Nota:  %.2f", aluno.n2);
+    printf("\n3.o Nota:  %.2f ", aluno.n3);
+}
+
 // Função que busca dado aluno na tabela hash;
 void consultarAluno(Hash *tabelaHash){
     struct aluno alAux;
     int matriculaDoAluno = 0;
 
     // Leitura dos dados;
-    printf("Matricula:  ");
-    scanf(" %d", &matriculaDoAluno);
+    matriculaDoAluno = obterMat();
 
     // Verificação se o aluno não existe na tabela hash;
-    if(buscaHash_EnderAberto(tabelaHash,  matriculaDoAluno, &alAux) == 0){
+    if(buscaHash_EnderAberto(tabelaHash,  matriculaDoAluno, &alAux) != 1){
         printf("Nada foi encontrado !!!\n");
         return;
     }
 
-    // Exibição dos dados da tabela hash;
-    printf("\n\nMatricula:  %d", alAux.matricula);
-    printf("\nNome:  %s", alAux.nome);
-    printf("\n1.o Nota:  %.2f", alAux.n1);
-    printf("\n2.o Nota:  %.2f", alAux.n2);
-    printf("\n3.o Nota:  %.2f ", alAux.n3);
+    exibirAluno(alAux);
 }
 
 // Função que lista todos as matrículas ativas na árvore;
