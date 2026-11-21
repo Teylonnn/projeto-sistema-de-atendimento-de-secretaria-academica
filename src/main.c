@@ -14,30 +14,63 @@
 
 void templateMenuDeOpcoes(void);
 
-void cadastrarAluno(Hash *tabelaHash, ArvBin *arvoreBinaria, int *quantidadeDeMatriculasAtivas, int *quantidadeAlunosCadastrados){
-    int matriculaDoAluno;
-    char nomeDoAluno[TAMANHO_NOME];
-    float primeiraNotaDoAluno, segundaNotaDoAluno, terceiraNotaDoAluno;
+int obterMat(){
+    int mat;
 
-    // Leitura dos dados do usuário;
     printf("Matricula:  ");
-    scanf("%d", &matriculaDoAluno);
-    printf("Nome:  ");
-    scanf(" %99[^\n]", nomeDoAluno);
-    printf("1.o Nota:  ");
-    scanf("%f", &primeiraNotaDoAluno);
-    printf("2.o Nota:  ");
-    scanf("%f", &segundaNotaDoAluno);
-    printf("3.o Nota:  ");
-    scanf("%f", &terceiraNotaDoAluno);
+    scanf("%d", &mat);
 
-    // Criação de aluno;
-    struct aluno aluno;
+    return mat;
+}
+
+char* obterNome(char *nome){
+    printf("Nome:  ");
+    scanf(" %99[^\n]", nome);
+
+    return nome;
+}
+
+float obterNota(int *contador){
+    float nota;
+
+    printf("%d.o Nota:  ", *contador);
+    scanf("%f", &nota);
+
+    (*contador)++;
+    return nota;
+}
+
+struct aluno criarAluno(struct aluno aluno, int matriculaDoAluno, char *nomeDoAluno, float primeiraNotaDoAluno, float segundaNotaDoAluno, float terceiraNotaDoAluno){
     aluno.matricula = matriculaDoAluno;
     strcpy(aluno.nome, nomeDoAluno);
     aluno.n1 = primeiraNotaDoAluno;
     aluno.n2 = segundaNotaDoAluno;
     aluno.n3 = terceiraNotaDoAluno;
+
+    return aluno;
+}
+
+void foiCadastrado(int i){
+    i == 1? printf("Aluno cadastrado !!!") : printf("Aluno não pode ser cadastrado.");
+}
+
+void cadastrarAluno(Hash *tabelaHash, ArvBin *arvoreBinaria, int *quantidadeDeMatriculasAtivas, int *quantidadeAlunosCadastrados){
+    int matriculaDoAluno;
+    int contador = 1;
+    char nomeDoAluno[TAMANHO_NOME];
+    float primeiraNotaDoAluno, segundaNotaDoAluno, terceiraNotaDoAluno; 
+
+    // Leitura dos dados do usuário;
+    matriculaDoAluno = obterMat(); 
+    strcpy(nomeDoAluno, obterNome(nomeDoAluno));
+    primeiraNotaDoAluno = obterNota(&contador);
+    segundaNotaDoAluno = obterNota(&contador);
+    terceiraNotaDoAluno = obterNota(&contador);
+
+    // Criação de aluno;
+    struct aluno aluno;
+    aluno = criarAluno(aluno, matriculaDoAluno, nomeDoAluno, primeiraNotaDoAluno, segundaNotaDoAluno, terceiraNotaDoAluno);
+    
 
     // verificação se a matrícula já está cadastrada;
     if(buscaHash_EnderAberto(tabelaHash, matriculaDoAluno, &aluno) == 1){
@@ -50,8 +83,9 @@ void cadastrarAluno(Hash *tabelaHash, ArvBin *arvoreBinaria, int *quantidadeDeMa
     insere_ArvBin(arvoreBinaria, matriculaDoAluno);
     (*quantidadeDeMatriculasAtivas)++;
     (*quantidadeAlunosCadastrados)++;
+    contador = 0;
 
-    i == 1? printf("Aluno cadastrado !!!") : printf("Aluno não pode ser cadastrado.");
+    foiCadastrado(i);
    
 }
 
