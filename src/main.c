@@ -129,8 +129,7 @@ void trancarMatriculaAtiva(ArvBin *arvoreBinaria, int *quantidadeDeMatriculasAti
     int matriculaDoAluno = 0;
 
     // Leitura dos dados;
-    printf("Matricula:  ");
-    scanf(" %d", &matriculaDoAluno);
+    matriculaDoAluno = obterMat();
 
     // Verificação se a matrícula existe;
     if(consulta_ArvBin(arvoreBinaria, matriculaDoAluno != 1)){
