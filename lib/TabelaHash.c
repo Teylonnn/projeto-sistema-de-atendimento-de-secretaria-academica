@@ -89,4 +89,4 @@ int buscaHash_EnderAberto(Hash* ha, int mat, struct aluno* al) {
         }
     }
     return 0;
-}
+} 

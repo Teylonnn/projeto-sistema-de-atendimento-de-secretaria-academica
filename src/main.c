@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#define MAX_TABELA_HASH 11
+#define TAMANHO_NOME 30
 
 #include "../lib/Aluno.h"
 #include "../lib/TabelaHash.h"
@@ -10,9 +12,227 @@
 #include "../lib/PilhaDin.h"
 #include "../lib/ListaDinEncadDupla.h"
 
+void templateMenuDeOpcoes(void);
+
+int obterMat(){
+    int mat;
+
+    printf("Matricula:  ");
+    scanf("%d", &mat);
+
+    return mat;
+}
+
+char* obterNome(char *nome){
+    printf("Nome:  ");
+    scanf(" %99[^\n]", nome);
+
+    return nome;
+}
+
+float obterNota(int *contador){
+    float nota;
+
+    printf("%d.o Nota:  ", *contador);
+    scanf("%f", &nota);
+
+    (*contador)++;
+    return nota;
+}
+
+struct aluno criarAluno(struct aluno aluno, int matriculaDoAluno, char *nomeDoAluno, float primeiraNotaDoAluno, float segundaNotaDoAluno, float terceiraNotaDoAluno){
+    aluno.matricula = matriculaDoAluno;
+    strcpy(aluno.nome, nomeDoAluno);
+    aluno.n1 = primeiraNotaDoAluno;
+    aluno.n2 = segundaNotaDoAluno;
+    aluno.n3 = terceiraNotaDoAluno;
+
+    return aluno;
+}
+
+void foiCadastrado(int i){
+    i == 1? printf("Aluno cadastrado !!!") : printf("Aluno não pode ser cadastrado.");
+}
+
+void cadastrarAluno(Hash *tabelaHash, ArvBin *arvoreBinaria, int *quantidadeDeMatriculasAtivas, int *quantidadeAlunosCadastrados){
+    int matriculaDoAluno;
+    int contador = 1;
+    char nomeDoAluno[TAMANHO_NOME];
+    float primeiraNotaDoAluno, segundaNotaDoAluno, terceiraNotaDoAluno; 
+
+    // Leitura dos dados do usuário;
+    matriculaDoAluno = obterMat(); 
+    strcpy(nomeDoAluno, obterNome(nomeDoAluno));
+    primeiraNotaDoAluno = obterNota(&contador);
+    segundaNotaDoAluno = obterNota(&contador);
+    terceiraNotaDoAluno = obterNota(&contador);
+
+    // Criação de aluno;
+    struct aluno aluno;
+    aluno = criarAluno(aluno, matriculaDoAluno, nomeDoAluno, primeiraNotaDoAluno, segundaNotaDoAluno, terceiraNotaDoAluno);
+    
+
+    // verificação se a matrícula já está cadastrada;
+    if(buscaHash_EnderAberto(tabelaHash, matriculaDoAluno, &aluno) == 1){
+        printf("Matricula já cadastrada.\n");
+        return;
+    }
+    
+    // Adição do aluno na tabela hash e matrícula na árvore binária;
+    int i = insereHash_EnderAberto(tabelaHash, aluno);
+    insere_ArvBin(arvoreBinaria, matriculaDoAluno);
+    (*quantidadeDeMatriculasAtivas)++;
+    (*quantidadeAlunosCadastrados)++;
+    contador = 0;
+
+    foiCadastrado(i);
+   
+}
+
+void exibirAluno(struct aluno aluno){
+    // Exibição dos dados da tabela hash;
+    printf("\n\nMatricula:  %d", aluno.matricula);
+    printf("\nNome:  %s", aluno.nome);
+    printf("\n1.o Nota:  %.2f", aluno.n1);
+    printf("\n2.o Nota:  %.2f", aluno.n2);
+    printf("\n3.o Nota:  %.2f ", aluno.n3);
+}
+
+// Função que busca dado aluno na tabela hash;
+void consultarAluno(Hash *tabelaHash){
+    struct aluno alAux;
+    int matriculaDoAluno = 0;
+
+    // Leitura dos dados;
+    matriculaDoAluno = obterMat();
+
+    // Verificação se o aluno não existe na tabela hash;
+    if(buscaHash_EnderAberto(tabelaHash,  matriculaDoAluno, &alAux) != 1){
+        printf("Nada foi encontrado !!!\n");
+        return;
+    }
+
+    exibirAluno(alAux);
+}
+
+// Função que lista todos as matrículas ativas na árvore;
+void listagemDeMatriculasAtivas(ArvBin *arvoreBinaria){
+    printf("      < MATRICULAS ATIVAS >\n");
+    printf("-----------------------------------\n");
+    exibirArvBinEmOrdem(arvoreBinaria);
+    printf("\n-----------------------------------\n");
+
+}
+
+// Função que remove matrícula ativa da árvore; 
+void trancarMatriculaAtiva(ArvBin *arvoreBinaria, int *quantidadeDeMatriculasAtivas ){
+    int matriculaDoAluno = 0;
+
+    // Leitura dos dados;
+    matriculaDoAluno = obterMat();
+
+    // Verificação se a matrícula existe;
+    if(consulta_ArvBin(arvoreBinaria, matriculaDoAluno != 1)){
+        printf("Matricula não existe ou nao esta ativa.\n");
+        return;
+    }
+
+    // Remoção da matrícula;
+    remove_ArvBin(arvoreBinaria, matriculaDoAluno);
+    (*quantidadeDeMatriculasAtivas)--;
+
+    printf("Matricula trancada com sucesso !!!\n");
+
+}
+
+void menuSistemaSecretariaAcademica(Hash *tabelaHash, ArvBin *arvoreBinaria, int *quantidadeDeMatriculasAtivas, int *quantidadeAlunosCadastrados){
+    int opcao;
+
+    do{
+        templateMenuDeOpcoes();
+        printf("Opcao (0 a 9):  ");
+        scanf("%d", &opcao);
+
+        switch(opcao){
+            case 0:
+                break;
+            case 1:
+                // Verificação se o cadastro de alunos alcançou o limite máximo da tabela hash;
+                if((*quantidadeAlunosCadastrados > 11)){
+                    printf("Limite maximo alcançado !!! \n");
+                }
+                else{
+                    cadastrarAluno(tabelaHash, arvoreBinaria, quantidadeDeMatriculasAtivas, quantidadeAlunosCadastrados);
+                }
+                break;
+            case 2:
+                // Verificação se o cadastro de alunos alcançou o limite máximo da tabela hash;
+                if((*quantidadeAlunosCadastrados <= 0)){
+                    printf("Sem alunos cadastrados!!! \n");
+                }
+                else{
+                    consultarAluno(tabelaHash);
+                }
+                break;
+            case 3:
+                // Verificação se a há matrículas cadastradas;
+                if((*quantidadeDeMatriculasAtivas) <= 0){
+                    printf("Sem matriculas ativas. \n");                   
+                }
+                else{
+                    listagemDeMatriculasAtivas(arvoreBinaria);
+                }
+                break;
+            case 4:
+                // Verificação se a há matrículas cadastradas;
+                if((*quantidadeDeMatriculasAtivas) <= 0){
+                    printf("Sem matriculas ativas. \n");                   
+                }
+                else{
+                    trancarMatriculaAtiva(arvoreBinaria, quantidadeDeMatriculasAtivas );
+                }
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
+                break;
+            case 8:
+                break;
+            case 9:
+                break;
+            default:
+                printf("Opcao invalida !!!\n");
+                break;
+        }
+
+    }while(opcao != 0);
+}
+
+void templateMenuDeOpcoes(){
+    printf("\n        <--- SISTEMA DE GESTAO DA SECRETARIA ACADEMICA ---> \n");
+    printf("---------------------------------------------------------------------\n");
+    printf("[1] - Cadastrar aluno\n");
+    printf("[2] - Consultar aluno\n");
+    printf("[3] - Listagem de matriculas ativas\n");
+    printf("[4] - Trancar matricula\n");
+    printf("[5] - Chegada para atendimento\n");
+    printf("[6] - Registrar urgencia\n");
+    printf("[7] - Atender proximo\n");
+    printf("[8] - Despachar requerimento\n");
+    printf("[9] - Relatorio\n");
+    printf("[0] - Sair\n");
+    printf("---------------------------------------------------------------------\n");
+}
 
 int main(){
-    
+    Hash *tabelaHash = criaHash(MAX_TABELA_HASH);
+    ArvBin *arvoreBinaria = cria_ArvBin();
+    int quantidadeDeMatriculasAtivas = 0;
+    int quantidadeAlunosCadastrados = 0;
+    menuSistemaSecretariaAcademica(tabelaHash, arvoreBinaria, &quantidadeDeMatriculasAtivas, &quantidadeAlunosCadastrados);
+
     return 0;
 }
 

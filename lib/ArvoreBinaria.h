@@ -10,5 +10,6 @@ int insere_ArvBin(ArvBin* raiz, int valor);
 int remove_ArvBin(ArvBin *raiz, int valor);
 int consulta_ArvBin(ArvBin *raiz, int valor);
 void emordem_ArvBin(ArvBin *raiz);
+void exibirArvBinEmOrdem(ArvBin *raiz);
 
 #endif
