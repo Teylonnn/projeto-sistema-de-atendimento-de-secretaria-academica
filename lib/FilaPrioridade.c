@@ -3,14 +3,14 @@
 #include <string.h>
 #include "FilaPrioridade.h"
 
-struct paciente {
+struct urgencia {
     char nome[30];
     int prio;
 };
 
 struct fila_prioridade {
     int qtd;
-    struct paciente dados[MAX];
+    struct urgencia dados[MAX];
 };
 
 FilaPrio* cria_FilaPrio() {

@@ -4,6 +4,15 @@
 #define MAX_TABELA_HASH 11 
 #define TAMANHO_NOME 30
 
+/*Projeto Final da matéria de Estrutura de Dados 1 - Bloco 3 - UESPI - CTU
+  Dupla: - THEILLON ARAUJO DOS SANTOS 
+         - JESUS EMANUEL ALVES DAS NEVES
+
+
+  OBS: para execução as vezes tem que executar o comando antes:
+  gcc -Wall -Wextra -g3 -I lib src/main.c lib/ArvoreBinaria.c lib/FilaDin.c lib/FilaPrioridade.c lib/ListaDinEncadDupla.c lib/PilhaDin.c lib/TabelaHash.c -o src/output/main.exe
+*/
+
 #include "../lib/Aluno.h"
 #include "../lib/TabelaHash.h"
 #include "../lib/ArvoreBinaria.h"
@@ -79,7 +88,7 @@ void menuSistemaSecretariaAcademica(Hash *tabelaHash, ArvBin *arvoreBinaria, Fil
                 break;
             case 1:
                 // Verificação se o cadastro de alunos alcançou o limite máximo da tabela hash;
-                if((*quantidadeAlunosCadastrados > 11)){
+                if((*quantidadeAlunosCadastrados >= 11)){
                     printf("Limite maximo alcançado !!! \n");
                 }
                 else{
@@ -110,7 +119,7 @@ void menuSistemaSecretariaAcademica(Hash *tabelaHash, ArvBin *arvoreBinaria, Fil
                     printf("Sem matriculas ativas. \n");                   
                 }
                 else{
-                    trancarMatriculaAtiva(arvoreBinaria, quantidadeDeMatriculasAtivas );
+                    trancarMatriculaAtiva(arvoreBinaria, quantidadeDeMatriculasAtivas);
                 }
                 break;
             case 5:
@@ -166,7 +175,7 @@ int obterMat(){
 //Função para obter nome
 char* obterNome(char *nome){
     printf("Nome:  ");
-    scanf(" %99[^\n]", nome);
+    scanf(" %29[^\n]", nome);
 
     return nome;
 }
@@ -218,7 +227,7 @@ void cadastrarAluno(Hash *tabelaHash, ArvBin *arvoreBinaria, int *quantidadeDeMa
 
     // Leitura dos dados do usuário;
     matriculaDoAluno = obterMat(); 
-    strcpy(nomeDoAluno, obterNome(nomeDoAluno));
+    obterNome(nomeDoAluno);
     primeiraNotaDoAluno = obterNota(&contador);
     segundaNotaDoAluno = obterNota(&contador);
     terceiraNotaDoAluno = obterNota(&contador);
@@ -276,7 +285,7 @@ void consultarAluno(Hash *tabelaHash){
 void listagemDeMatriculasAtivas(ArvBin *arvoreBinaria){
     printf("      < MATRICULAS ATIVAS >\n");
     printf("-----------------------------------\n");
-    exibirArvBinEmOrdem(arvoreBinaria);
+    emordem_ArvBin(arvoreBinaria);
     printf("\n-----------------------------------\n");
 
 }
@@ -289,7 +298,7 @@ void trancarMatriculaAtiva(ArvBin *arvoreBinaria, int *quantidadeDeMatriculasAti
     matriculaDoAluno = obterMat();
 
     // Verificação se a matrícula existe;
-    if(consulta_ArvBin(arvoreBinaria, matriculaDoAluno != 1)){
+    if(!consulta_ArvBin(arvoreBinaria, matriculaDoAluno)){
         printf("Matricula não existe ou nao esta ativa.\n");
         return;
     }
@@ -326,7 +335,7 @@ int RegistrarUrgencia(ArvBin *raiz, Hash* ha, FilaPrio* fi){
     int prio = obterPrioridade();
 
     if(prio < 1 || prio > 5){
-        printf("Prioridade: %d inválida", prio);
+        printf("Prioridade: %d invalida\n", prio);
         return 0;
     }
 
@@ -382,7 +391,8 @@ void despacharRequerimento(Pilha* pi, Lista* li){
 void relatorio(Lista* li){
     struct aluno al;
     printf("=== Requerimentos Concluidos ===\n");
-    for(int i = 1; i <= tamanho_lista(li); i++){
+    int tamanhoLista = tamanho_lista(li);
+    for(int i = 1; i <= tamanhoLista; i++){
         busca_lista_pos(li, i, &al);
         printf("Matricula %d | Nome: %s \n",al.matricula, al.nome);
     }
