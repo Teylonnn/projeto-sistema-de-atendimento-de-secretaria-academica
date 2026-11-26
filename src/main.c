@@ -88,39 +88,19 @@ void menuSistemaSecretariaAcademica(Hash *tabelaHash, ArvBin *arvoreBinaria, Fil
                 break;
             case 1:
                 // Verificação se o cadastro de alunos alcançou o limite máximo da tabela hash;
-                if((*quantidadeAlunosCadastrados >= 11)){
-                    printf("Limite maximo alcançado !!! \n");
-                }
-                else{
-                    cadastrarAluno(tabelaHash, arvoreBinaria, quantidadeDeMatriculasAtivas, quantidadeAlunosCadastrados);
-                }
+                temAlunoCadastrado(tabelaHash, arvoreBinaria, quantidadeDeMatriculasAtivas, quantidadeAlunosCadastrados);
                 break;
             case 2:
                 // Verificação se o cadastro de alunos alcançou o limite máximo da tabela hash;
-                if((*quantidadeAlunosCadastrados <= 0)){
-                    printf("Sem alunos cadastrados!!! \n");
-                }
-                else{
-                    consultarAluno(tabelaHash);
-                }
+                temAlunoConsulta(tabelaHash, quantidadeAlunosCadastrados);
                 break;
             case 3:
                 // Verificação se a há matrículas cadastradas;
-                if((*quantidadeDeMatriculasAtivas) <= 0){
-                    printf("Sem matriculas ativas. \n");                   
-                }
-                else{
-                    listagemDeMatriculasAtivas(arvoreBinaria);
-                }
+                temMatriculaAtivaListagem(arvoreBinaria, quantidadeDeMatriculasAtivas);
                 break;
             case 4:
                 // Verificação se a há matrículas cadastradas;
-                if((*quantidadeDeMatriculasAtivas) <= 0){
-                    printf("Sem matriculas ativas. \n");                   
-                }
-                else{
-                    trancarMatriculaAtiva(arvoreBinaria, quantidadeDeMatriculasAtivas);
-                }
+               temMatriculaAtivaTrancar(arvoreBinaria, quantidadeDeMatriculasAtivas);
                 break;
             case 5:
                 chegadaAtendimento(arvoreBinaria, tabelaHash, fi);
@@ -309,6 +289,46 @@ void trancarMatriculaAtiva(ArvBin *arvoreBinaria, int *quantidadeDeMatriculasAti
 
     printf("Matricula trancada com sucesso !!!\n");
 
+}
+
+void temAlunoCadastrado(Hash *tabelaHash, ArvBin *arvoreBinaria, int *quantidadeDeMatriculasAtivas, int *quantidadeAlunosCadastrados){
+    // Verificação se o cadastro de alunos alcançou o limite máximo da tabela hash;
+    if((*quantidadeAlunosCadastrados >= MAX_TABELA_HASH)){
+        printf("Limite maximo alcançado !!! \n");
+    }
+    else{
+        cadastrarAluno(tabelaHash, arvoreBinaria, quantidadeDeMatriculasAtivas, quantidadeAlunosCadastrados);
+    }
+}
+
+void temAlunoConsulta(Hash *tabelaHash, int *quantidadeAlunosCadastrados){
+    // Verificação se o cadastro de alunos alcançou o limite máximo da tabela hash;
+    if((*quantidadeAlunosCadastrados <= 0)){
+        printf("Sem alunos cadastrados!!! \n");
+    }
+    else{
+        consultarAluno(tabelaHash);
+    }
+}
+
+void temMatriculaAtivaListagem(ArvBin *arvoreBinaria, int *quantidadeDeMatriculasAtivas){
+    // Verificação se a há matrículas cadastradas;
+    if((*quantidadeDeMatriculasAtivas) <= 0){
+        printf("Sem matriculas ativas. \n");                   
+    }
+    else{
+        listagemDeMatriculasAtivas(arvoreBinaria);
+    }
+}
+
+void temMatriculaAtivaTrancar(ArvBin *arvoreBinaria, int *quantidadeDeMatriculasAtivas){
+    // Verificação se a há matrículas cadastradas;
+    if((*quantidadeDeMatriculasAtivas) <= 0){
+        printf("Sem matriculas ativas. \n");                   
+    }
+    else{
+        trancarMatriculaAtiva(arvoreBinaria, quantidadeDeMatriculasAtivas );
+    }
 }
 
 //Lê a matrícula. Se ela não está na árvore, recusa. Caso contrário, busca o aluno na tabela hash e o insere na fila.
